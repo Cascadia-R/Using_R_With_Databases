@@ -1,0 +1,12 @@
+To start Vagrant cd into vagrant directory in your command line prompt and type:
+Vagrant up
+
+Then open your browser and run R-studio server localhost... port 8787
+
+To end Vagrant session type:
+
+Vagrant halt
+
+if you have any trouble with this let me know.
+
+Thanks
