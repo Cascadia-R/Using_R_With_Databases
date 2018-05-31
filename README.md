@@ -12,7 +12,7 @@ With the proliferation of data and increased reliance on data-driven knowledge, 
 This intermediate workshop will introduce you to various methods of using R with databases to derive valuable information from data. The workshop will give you hands-on experience in the following areas:
 - how to connect to a database from R. 
 - how to create and manage database objects.
-- how Issue SQL queries to retrieve and transform your data using R.
+- how to issue SQL queries to retrieve and transform your data using R.
 
 ***
 
