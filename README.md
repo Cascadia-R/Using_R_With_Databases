@@ -7,7 +7,7 @@
 # Overview
 
 Would you like to learn how R is used to advance valuable information from data stored in relational databases? 
-With the proliferation of data and increased reliance on data-driven knowledge, many companies need skilled individuals who can extract meaningful information form data in order to drive informed decision making. 
+With the proliferation of data and increased reliance on data-driven knowledge, many companies need skilled individuals who can extract meaningful information form data in order to drive informed decisions. 
 
 This intermediate workshop will introduce you to various methods of using R with databases to derive valuable information from data. The workshop will give you hands-on experience in the following areas:
 - how to connect to a database from R. 
