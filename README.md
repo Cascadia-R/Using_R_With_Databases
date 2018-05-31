@@ -1,7 +1,7 @@
----
-title: "<center> Using R With Relational Databases </center>"
-author: "Aaron Makubuya"
----
+# Using R With Relational Databases 
+***
+#### Aaron Makubuya
+
 
 ***
 # Overview
