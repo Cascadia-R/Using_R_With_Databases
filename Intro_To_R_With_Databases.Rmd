@@ -53,7 +53,7 @@ These are the leading DBMS products that you are likely to encounter as most ent
 
 ##### Call necessary libraries
 ```{r, warning=FALSE, message=FALSE}
-library(tidyverse)
+library(dplyr)
 library(glue)
 library(dygraphs)
 library(DT)
