@@ -58,6 +58,7 @@ library(glue)
 library(dygraphs)
 library(DT)
 library(DBI)
+library(xts)
 ```
 
 By calling a library into your workspace, you get access to all the functions hosted by that library. These functions come with documentation and vignettes on how to use them. You can access documentation about a library by prefixing it with a question mark `?xts`
