@@ -1,0 +1,318 @@
+---
+title: "<center> Using R With Relational Databases </center>"
+author: "Aaron Makubuya"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+***
+
+# Introduction 
+
+#### What is R
+
+R is a programming language and free software environment for statistical computing and graphics that is supported by the R Foundation for Statistical Computing.[6] The R language is widely used among statisticians and data miners for developing statistical software[7] and data analysis. You can learn more about R [here](https://en.wikipedia.org/wiki/R_(programming_language)).
+
+#### What is a relational database
+
+A [relational database](https://aws.amazon.com/relational-database/) is a collection of data items with pre-defined relationships between them. These items are organized as a set of tables with columns and rows. Tables are used to hold information about the objects to be represented in the database. Each column in a table holds a certain kind of data and a field stores the actual value of an attribute. The rows in the table represent a collection of related values of one object or entity. Each row in a table could be marked with a unique identifier called a primary key, and rows among multiple tables can be made related using foreign keys.
+
+#### What are other kinds of databases 
+
+Most other databases fall into the category of NoSQL databases.
+
+- A NoSQL (originally referring to "non SQL" or "non relational") database provides a mechanism for storage and retrieval of data that is modeled in means other than the tabular relations used in relational databases. R is capable of working with these databases as well. You can learn more about NoSQL databases [here](https://en.wikipedia.org/wiki/NoSQL). For the purposes of this workshop, we will focus only on relational databases.
+
+#### Who are the DBMS Vendors
+
+Commercial DBMS vendors:
+
+- `ORACLE`
+
+- `IBM DB2`
+
+- `SQL Server`
+
+- `MySQL, PostgreSQL and many more` 
+
+These are the leading DBMS products that you are likely to encounter as most enterprises adopt one or more of these products for data storage and retrieval purposes.
+
+#### Why do we care
+
+- Put this workshop into context of overall data management and data analysis.
+
+- Understand what currently exists.
+
+- Why a database management system (DBMS) is better than a bunch of files and how to integrate it with R.
+
+***
+
+# Getting Started
+
+##### Call necessary libraries
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(glue)
+library(dygraphs)
+library(DT)
+library(DBI)
+```
+
+By calling a library into your workspace, you get access to all the functions hosted by that library. These functions come with documentation and vignettes on how to use them. You can access documentation about a library by prefixing it with a question mark `?xts`
+
+**Note:** By calling the tidyverse library, we automagically load a number of other libraries relevant to data manupulation and analytical computing. These include the following:
+
+- `ggplot2`, for data visualisation.
+
+- `dplyr`, for data manipulation.
+
+- `tidyr`, for data tidying.
+
+- `readr`, for data import.
+
+- `purrr`, for functional programming.
+
+- `tibble`, for tibbles, a modern re-imagining of data frames.
+
+- `stringr`, for strings.
+
+- `forcats`, for factors.
+
+***
+### Connecting to a Database Using in R
+```{r, warning=FALSE, message=FALSE}
+con <- DBI::dbConnect(
+  RPostgreSQL::PostgreSQL(), # Driver name
+  dbname = "adventureworks",
+  host = "127.0.0.1",
+  user = "vagrant",
+  password = "jw8s0F4"
+)
+```
+
+We use the `dbConnect` function from the `DBI` library to establish a connection to the adverturworks database. Notice that the function requires specific parameters (`database driver`, `dbname`, `host`, `user`, and `password`) in order to successfully establish the connection to the database. These parametric requirements are consistent with most databases connection functions especially if the database you are connecting to is an enterprise database.
+
+***
+
+### The SQL SELECT Statement
+The SELECT statement is used to select data from a database.The data returned is stored in a result table, called the result-set. you can learn more about select statements [here](https://www.w3schools.com/sql/sql_select.asp)
+
+#### Running SQL Select statements in R
+
+```{r, warning=FALSE, message=FALSE}
+query <- glue("SELECT *
+FROM adventureworks.humanresources.employee tb
+limit 10")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data %>% datatable(.,options = list(scrollX = TRUE, pageLength = 4, bPaginate = TRUE))
+```
+
+- In the code snipet above, we used R to run SQL statement that selects all columns ( using the `(*)` wild card) from the `employee` table in our adventurworks database and returns 10 observations as our result set. 
+
+```{r, warning=FALSE, message=FALSE}
+query <- glue("SELECT tb.businessentityid, tb.nationalidnumber, tb.jobtitle
+FROM adventureworks.humanresources.employee tb
+limit 10")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data  %>% 
+  datatable(.,options = list(scrollX = TRUE, pageLength = 10, bPaginate = TRUE))
+```
+
+- In the code snipet above, we used R to run SQL statement that selects specific columns from the `employee` table in our adventurworks database and returns 10 observations as our result set.
+
+***
+### The Join Clauses
+
+A JOIN clause is used to combine rows from two or more tables, based on a related column between them. You can learn more about SQL join clauses [here](https://www.w3schools.com/sql/sql_join.asp)
+
+#### JOIN 
+```{r}
+query <- glue("SELECT firstname, lastname, coalesce(jobtitle, 'No data') jobtitle
+FROM adventureworks.humanresources.employee tb1
+JOIN adventureworks.person.person tb2
+ON tb1.businessentityid = tb2.businessentityid")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data %>% 
+  datatable(.,options = list(scrollX = TRUE, pageLength = 10, bPaginate = TRUE))
+```
+
+- The `Join` or `Inner JOIN` clause returns a result set where there is a match from both tables the (interset of table 1 and table 2). 
+
+#### LEFT JOIN 
+```{r, warning=FALSE, message=FALSE}
+query <- glue("SELECT firstname, lastname, jobtitle
+FROM adventureworks.humanresources.employee tb1
+LEFT JOIN adventureworks.person.person tb2
+ON tb1.businessentityid = tb2.businessentityid")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data %>% 
+  datatable(.,options = list(scrollX = TRUE, pageLength = 10, bPaginate = TRUE))
+```
+
+- The `LEFT JOIN` retuns a result where the two tables match on both sides but also returns all data from the table on the left (table 1).
+introduces NA's in rows of table 2 colum where there is no match case in table 1.
+
+#### RIGHT JOIN 
+```{r, warning=FALSE, message=FALSE}
+query <- glue("SELECT firstname, lastname, jobtitle
+FROM adventureworks.humanresources.employee tb1
+Right JOIN adventureworks.person.person tb2
+ON tb1.businessentityid = tb2.businessentityid")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data %>% 
+  datatable(.,options = list(scrollX = TRUE, pageLength = 10, bPaginate = TRUE))
+```
+
+- The `RIGHT JOIN` retuns a result set where the two tables match on both sides but also returns all data from the table on the right (table 2).
+introduces NA's in rows of table 1 colum where there is no match case in table 2.
+
+#### FULL JOIN 
+```{r, warning=FALSE, message=FALSE}
+query <- glue("SELECT firstname, lastname, jobtitle
+FROM adventureworks.humanresources.employee tb1
+FULL JOIN adventureworks.person.person tb2
+ON tb1.businessentityid = tb2.businessentityid")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data %>% 
+  select(jobtitle) %>%
+  group_by(jobtitle) %>%
+  summarise(count = n()) %>%
+  datatable(.,options = list(scrollX = TRUE, pageLength = 10, bPaginate = TRUE))
+```
+
+- The `FULL JOIN` retuns rows where the two tables match on both sides plus all data contained in both tables.
+introduces NA's in rows in both tables where there is no match case in the other table.
+
+It is possible to construct more sophisticated joins like `anti join` and `semi-join` but that is beyond the scope of this workshop. You can learn more about these kinds of joins [here](https://blog.jooq.org/2015/10/13/semi-join-and-anti-join-should-have-its-own-syntax-in-sql/)
+
+
+
+#### WHERE, AND, OR, NOT caluses
+
+The `WHERE` clause is used to extract only those records that fulfill a specified condition. The AND, NOT and OR operators are used to filter records based on more than one condition: You can learn more bout these operators [here](https://www.w3schools.com/sql/sql_and_or.asp)
+
+```{r}
+query <- glue("SELECT firstname, lastname, jobtitle
+FROM adventureworks.humanresources.employee tb1
+RIGHT JOIN adventureworks.person.person tb2
+ON tb1.businessentityid = tb2.businessentityid
+WHERE tb1.businessentityid IS NOT NULL
+AND jobtitle = 'Design Engineer' 
+OR jobtitle  =  'Research and Development Engineer';")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data %>% 
+  datatable(.,options = list(scrollX = TRUE, pageLength = 5, bPaginate = TRUE))
+```
+
+- In the `WHERE` clasue above we return a result set that contains data for those employees who do not have a missing job tittle. The `AND` and `OR` claused help support additional conditions we want to filter against.
+
+
+***
+
+### Parameterizing Queries:
+
+A [parameterized query](https://stackoverflow.com/questions/4712037/what-is-parameterized-query) (also known as a prepared statement) is a means of pre-compiling a SQL statement so that all you need to supply are the "parameters" (think "variables") that need to be inserted into the statement for it to be executed. It's commonly used as a means of preventing SQL injection attacks. You can learn more about sql injection attacks [here](https://www.w3schools.com/sql/sql_injection.asp)
+
+##### Get all cards that will expire in next 6 months
+```{r}
+date1 <- '2008-02-23'
+date2 <- '2008-07-23'
+
+query <- glue("SELECT creditcardid, expmonth, expyear
+FROM adventureworks.sales.creditcard
+WHERE make_date(expyear, expmonth, 1)  BETWEEN '{date1}' and DATE '{date2}' + INTERVAL '6 months'
+ORDER BY expmonth;")
+res <- dbSendQuery(con,query, as.is = TRUE) 
+data <- dbFetch(res)
+data %>%
+  datatable(.,options = list(scrollX = TRUE, pageLength = 5, bPaginate = TRUE))
+```
+
+- In the above query, we use the `glue` package to pass that dates as parameters to our sql statement. This allows us to dynamically change the result set of the SQL statement without affecting the structure of the query.
+
+***
+# Interfacing with databases using dplyr verbs
+
+- Interfacing R with databases is a sophisticated process that leverages dplyr verbs instead of SQL statements to retrieve and manipulate data using `SQL Select` statements under the hood. 
+
+```{r, warning=FALSE, message=FALSE}
+# Create employee table
+employee <- tbl(con, dbplyr::in_schema("humanresources", "employee"))
+
+# Create Department History table
+department_history  <- tbl(con, dbplyr::in_schema("humanresources", "employeedepartmenthistory"))
+```
+
+##### Joining tables for data analysis
+```{r}
+employee %>% 
+  left_join(department_history, by = c("businessentityid") ) %>% 
+  group_by(businessentityid) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n)) %>% 
+  mutate(n = coalesce(n, 0)) %>%
+  as.data.frame() %>%
+  datatable(.,options = list(scrollX = TRUE, pageLength = 5, bPaginate = TRUE))
+```
+
+
+##### Right Joins using dplyr verbs 
+```{r}
+employee %>% 
+  right_join(department_history, by = c("businessentityid") ) %>% 
+  mutate(one = 1) %>%
+  group_by(businessentityid) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n)) %>% 
+  mutate(n = coalesce(n, 0)) %>%
+  as.data.frame() %>%
+  datatable(.,options = list(scrollX = TRUE, pageLength = 5, bPaginate = TRUE))
+```
+
+
+#### How dplyr constructs the same query to the database
+```{r}
+employee %>% 
+  left_join(department_history, by = c("businessentityid") ) %>% 
+  mutate(one = 1) %>%
+  group_by(businessentityid) %>% summarise(n = sum(one, na.rm = TRUE)) %>% 
+  arrange(desc(n)) %>% mutate(n = coalesce(n, 0)) %>% 
+  show_query() # The show function allows you to see what the underlying sql looks like.
+```
+
+- Using the `show_query()` function we can see the query dplyr generated and passed to the DB to fetch the data above.
+
+Below is a sample query we used ealier to achieve the same result.
+
+```{r, results="hide", warning=FALSE, message=FALSE}
+"SELECT tb1.businessentityid, count(*) AS n
+FROM adventureworks.humanresources.employee tb1
+LEFT JOIN adventureworks.humanresources.employeedepartmenthistory tb2
+ON tb1.businessentityid = tb2.businessentityid
+GROUP BY tb1.businessentityid
+ORDER BY n DESC"
+```
+
+- Although both queries returned the same data, the query generated by dplyr is so much more verbose and complex in comparison to mine. 
+
+#### Key takeaways 
+
+`dplyr` takes its functions as names, and attempt to use them as a function in the query. You can expect `sum` for instance, to be present on most DB/driver combinations but if we replace `sum` with another aggregate function like `meadian` we can't be sure that it will work as expected. 
+
+Needless to say, if we try to create our own aggregate function `my_own_function <- function(x)  42` and later use it to aggregate data (`group_by(businessentityid) %>% summarise(n =my_own_function(one))`) it won't work, unless by some chance the database exposes the procedure called `my_own_function`. 
+
+In case this is still not clear, the dplyr code we used is a description used to generate SQL so it has to correspond to a valid SQL for the particular set of tools we used as a source.
+
+# Practice Exercises
+
+#### 1. Get the total sales by day with a dollar amount below 50,000 for the last three months of 2011
+
