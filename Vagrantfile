@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
     wget https://download2.rstudio.org/rstudio-server-1.1.442-amd64.deb
     gdebi -n rstudio-server-1.1.442-amd64.deb
     sudo -u vagrant mkdir -p '/home/vagrant/R/x86_64-pc-linux-gnu-library/3.4'
-    sudo -u vagrant /usr/bin/Rscript -e "install.packages(c('tidyverse', 'rjava', 'dygraphs', 'DT', 'ggplot2', 'slackr', 'RJDBC', 'glue', 'RPostgreSQL', 'dbplyr'), lib = '/home/vagrant/R/x86_64-pc-linux-gnu-library/3.4', quiet = TRUE)"
+    sudo -u vagrant /usr/bin/Rscript -e "install.packages(c('tidyverse', 'rjava', 'dygraphs', 'DT', 'glue', 'RPostgreSQL'), lib = '/home/vagrant/R/x86_64-pc-linux-gnu-library/3.4', quiet = TRUE)"
     sudo rstudio-server restart
   SHELL
 end
