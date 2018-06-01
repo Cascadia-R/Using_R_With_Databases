@@ -22,7 +22,7 @@ Please be sure to have the following software installed on your machine before t
 
 ### Note:
 
-- Please follow the instructions for your OS and architecture" should be enough (i.e install 32 bit software for a 32 bit machine and 64 bit software for a 64 bit machine. Needless to say, 64 bit binaries are not compatible with 32 OS and will result in software version incompatability.
+- Please follow the instructions for your OS and architecture (i.e install 32 bit software for a 32 bit machine and 64 bit software for a 64 bit machine). Needless to say, 64 bit binaries are not compatible with 32 OS and will result in software version incompatability.
 
 #### Windows Users
 
