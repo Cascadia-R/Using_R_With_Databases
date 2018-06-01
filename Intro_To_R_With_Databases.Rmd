@@ -316,3 +316,20 @@ In case this is still not clear, the dplyr code we used is a description used to
 
 #### 1. Get the total sales by day with a dollar amount below 50,000 for the last three months of 2011
 
+
+- **Create a visualization that summarizes the information above**
+
+
+#### 2. Get all the customers associated with the sales in the above query
+
+You will need to add the following tables and columns:
+
+- adventureworks.person.person tb2
+
+- personid 
+
+- businessentityid
+
+-  **Generate a datatable of the information above**
+
+    - **hint**: use the DT package 
