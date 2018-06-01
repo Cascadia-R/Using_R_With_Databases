@@ -1,6 +1,6 @@
 # Using R With Relational Databases 
 ***
-#### Aaron Makubuya
+### [Aaron Makubuya](https://www.linkedin.com/in/aaronmakubuya/)
 
 
 ***
