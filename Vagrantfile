@@ -72,6 +72,7 @@ Vagrant.configure("2") do |config|
     mkdir Workspace
     cd Workspace
     git clone https://github.com/lorint/AdventureWorks-for-Postgres.git
+    git clone https://github.com/Cascadia-R/Using_R_With_Databases.git
     cd AdventureWorks-for-Postgres/
     wget https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks-oltp-install-script.zip
     unzip AdventureWorks-oltp-install-script.zip
@@ -91,7 +92,7 @@ Vagrant.configure("2") do |config|
     wget https://download2.rstudio.org/rstudio-server-1.1.442-amd64.deb
     gdebi -n rstudio-server-1.1.442-amd64.deb
     sudo -u vagrant mkdir -p '/home/vagrant/R/x86_64-pc-linux-gnu-library/3.4'
-    sudo -u vagrant /usr/bin/Rscript -e "install.packages(c('tidyverse', 'rjava', 'dygraphs', 'DT', 'glue', 'RPostgreSQL'), lib = '/home/vagrant/R/x86_64-pc-linux-gnu-library/3.4', quiet = TRUE)"
+    sudo -u vagrant /usr/bin/Rscript -e "install.packages(c('tidyverse', 'dygraphs', 'DT', 'glue', 'RPostgreSQL'), lib = '/home/vagrant/R/x86_64-pc-linux-gnu-library/3.4', quiet = TRUE)"
     sudo rstudio-server restart
   SHELL
 end

@@ -20,6 +20,10 @@ This intermediate workshop offered at the [2018 Cascadia-R conference](https://c
 
 Please be sure to have the following software installed on your machine before the workshop date. If you already have [Virtual box](https://www.virtualbox.org/wiki/Downloads) and/or [Vagrant](https://www.vagrantup.com/) installed on your machine, you do not have to install the software below. Additional material will be provided during the workshop.
 
+### Note:
+
+- Please follow the instructions for your OS and architecture" should be enough (i.e install 32 bit software for a 32 bit machine and 64 bit software for a 64 bit machine. Needless to say, 64 bit binaries are not compatible with 32 OS and will result in software version incompatability.
+
 #### Windows Users
 
 Install virtual box for windows using the link below:
@@ -42,4 +46,20 @@ Install virtual box for mac/linux using the link below:
 
  - [Virtual box](https://download.virtualbox.org/virtualbox/5.2.12/VirtualBox-5.2.12-122591-OSX.dmg)
 
+
+# Next steps after installing the software above
+
+### How to use vagrant
+
+#### Step 1
+
+- Open your command prompt and move into vagrant directory containing the 'vagrantfile'.
+
+#### Step 2 
+
+- To start vagrant, type the following command in your command prompt: Vagrant up
+
+#### Step 3
+
+- Open your browser and run R-studio server localhost... port 8787
 
