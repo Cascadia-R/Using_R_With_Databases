@@ -9,7 +9,7 @@
 Would you like to learn how R is used to advance valuable information from data stored in relational databases? 
 With the proliferation of data and increased reliance on data-driven knowledge, many companies need skilled individuals who can extract meaningful information form data in order to drive informed decisions. 
 
-This intermediate workshop offered for the [2018 Cascadia-R conference](https://cascadiarconf.com/), will introduce you to various methods of using R with databases to derive valuable information from data. The workshop will give you hands-on experience in the following areas:
+This intermediate workshop offered at the [2018 Cascadia-R conference](https://cascadiarconf.com/), will introduce you to various methods of using R with databases to derive valuable information from data. The workshop will give you hands-on experience in the following areas:
 - how to connect to a database from R. 
 - how to create and manage database objects.
 - how to issue SQL queries to retrieve and transform your data using R.
