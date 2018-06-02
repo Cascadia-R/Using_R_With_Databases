@@ -123,7 +123,7 @@ data  %>%
   datatable(.,options = list(scrollX = TRUE, pageLength = 10, bPaginate = TRUE))
 ```
 
-- In the code snipet above, we used R to run SQL statement that selects specific columns from the `employee` table in our adventurworks database and returns 10 observations as our result set.
+- In the code snippet above, we used R to run SQL statement that selects specific columns from the `employee` table in our adventureworks database and returns 10 observations as our result set.
 
 ***
 ### The Join Clauses
@@ -198,7 +198,7 @@ It is possible to construct more sophisticated joins like `anti join` and `semi-
 
 #### WHERE, AND, OR, NOT caluses
 
-The `WHERE` clause is used to extract only those records that fulfill a specified condition. The AND, NOT and OR operators are used to filter records based on more than one condition: You can learn more bout these operators [here](https://www.w3schools.com/sql/sql_and_or.asp)
+The `WHERE` clause is used to extract only those records that fulfill a specified condition. The `AND`, `NOT` and `OR` operators are used to filter records based on more than one condition: You can learn more bout these operators [here](https://www.w3schools.com/sql/sql_and_or.asp)
 
 ```{r}
 query <- glue("SELECT firstname, lastname, jobtitle
