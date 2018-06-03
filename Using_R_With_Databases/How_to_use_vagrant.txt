@@ -1,0 +1,20 @@
+# How to use vagrant
+
+# Step 1
+Open your command prompt and move into vagrant directory containing the 'vagrantfile'.
+
+# Step 2 
+To start vagrant, type the following command in your command prompt: Vagrant up
+
+# Step 3
+Open your browser and run R-studio server localhost... port 8787
+
+
+
+To end Vagrant session type:
+
+Vagrant halt
+
+if you have any trouble with this let me know.
+
+Thanks
