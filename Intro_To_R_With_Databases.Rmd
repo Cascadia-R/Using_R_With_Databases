@@ -95,6 +95,12 @@ con <- DBI::dbConnect(
 
 We use the `dbConnect` function from the `DBI` library to establish a connection to the adverturworks database. Notice that the function requires specific parameters (`database driver`, `dbname`, `host`, `user`, and `password`) in order to successfully establish the connection to the database. These parametric requirements are consistent with most databases connection functions especially if the database you are connecting to is an enterprise database.
 
+
+### Closing connection 
+```{r}
+#dbDisconnect(con)
+```
+
 ***
 
 ### The SQL SELECT Statement
@@ -109,6 +115,7 @@ limit 10")
 res <- dbSendQuery(con,query, as.is = TRUE) 
 data <- dbFetch(res)
 data %>% datatable(.,options = list(scrollX = TRUE, pageLength = 4, bPaginate = TRUE))
+
 ```
 
 - In the code snipet above, we used R to run SQL statement that selects all columns ( using the `(*)` wild card) from the `employee` table in our adventurworks database and returns 10 observations as our result set. 
