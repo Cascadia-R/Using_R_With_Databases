@@ -61,5 +61,9 @@ Install virtual box for mac/linux using the link below:
 
 #### Step 3
 
-- Open your browser and run R-studio server localhost... port 8787
+- Open your browser and run R-studio server: type -> localhost:8787
+
+#### Step 4
+
+- user and passord to R-studio server: vagrant
 
